@@ -11,16 +11,11 @@ options.register('era', 'era2017',
                  VarParsing.varType.string,
                  "choose era"
                  )			 
-options.register('doPUProtons', True,
+options.register('doSignalOnly', False,
                  VarParsing.multiplicity.singleton,
                  VarParsing.varType.bool,
-                 "Include PU protons"
-                 )
-options.register('instance', 'genPUProtons',
-                 VarParsing.multiplicity.singleton,
-                 VarParsing.varType.string,
-                 "productInstanceName for PU protons"
-                 )		                 
+                 "Exclude PU protons"
+                 )	                 
 options.register('outFilename', 'miniAOD_withProtons.root',
                  VarParsing.multiplicity.singleton,
                  VarParsing.varType.string,
@@ -92,7 +87,8 @@ process.ctppsProtons.fitVtxY = True
 #if false then ndof=1 and chi2 values will be big (filteredProton container will be empty)
                           
 #If interested in the reconstruction of signal protons only (no PU), uncomment this line:
-#process.beamDivergenceVtxGenerator.srcGenParticle = cms.VInputTag(cms.InputTag("prunedGenParticles"))
+if not options.doSignalOnly:
+  process.beamDivergenceVtxGenerator.srcGenParticle = cms.VInputTag(cms.InputTag("prunedGenParticles"))
 
 # Output definition
 process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",

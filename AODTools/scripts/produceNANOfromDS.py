@@ -48,7 +48,8 @@ def buildCondorFile(opt,FarmDirectory):
               if os.path.isfile(outfile): continue
               condor.write('arguments = %s %s %s\n'%(file,output,era))
               condor.write('queue 1\n')
-
+    cmsRunArg='inputFiles=${input} era=${era} outFilename=miniAOD_withProtons.root maxEvents=%d'%(opt.Nevents)
+    if opt.nopu: cmsRunArg+=' doSignalOnly=True'
     workerFile='%s/worker_%s.sh'%(FarmDirectory,rand)
     with open(workerFile,'w') as worker:
         worker.write('#!/bin/bash\n')
@@ -68,7 +69,7 @@ def buildCondorFile(opt,FarmDirectory):
         worker.write('eval `scram r -sh`\n')
         worker.write('cd ${WORKDIR}\n')
         worker.write('echo "INFO: starting MINIAOD \-\> MINIAOD+Protons"\n')
-        worker.write('cmsRun $CMSSW_BASE/src/CMSDASTools/AODTools/test/addProtons_miniaod.py inputFiles=${input} era=${era} outFilename=miniAOD_withProtons.root maxEvents=%d\n\n'%(opt.Nevents))
+        worker.write('cmsRun $CMSSW_BASE/src/CMSDASTools/AODTools/test/addProtons_miniaod.py %s\n'%cmsRunArg)
         worker.write('[[ ! -f miniAOD_withProtons.root ]] && echo ERROR with addProtons_miniaod.py && exit 1\n')
         worker.write('echo "INFO: starting MINIAOD+Protons \-\> NANOAOD"\n')
         worker.write('cmsRun $CMSSW_BASE/src/CMSDASTools/AODTools/test/produceNANO.py inputFiles=file:miniAOD_withProtons.root era=${era} outFilename=nano.root\n')
@@ -96,6 +97,7 @@ def main():
     parser.add_option('-o', '--out',      dest='output',   help='output directory',  default='/eos/home-m/mpitt/CMSDAS/Samples', type='string')
     parser.add_option('-n', '--nevents',  dest='Nevents',  help='number of events to process',  default=-1, type='int')
     parser.add_option('-s', '--submit',   dest='submit',   help='submit jobs',       action='store_true')
+    parser.add_option('-p', '--nopu',     dest='nopu',     help='dont process pileup protons',      action='store_true')
     (opt, args) = parser.parse_args()
      
     if not opt.datasets: parser.error('dataset not given')
