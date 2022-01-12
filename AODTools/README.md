@@ -8,17 +8,18 @@ cd CMSSW_12_3_0_pre1/src
 cmsenv
 
 #add nanoAOD package to include protonReco in MC
-git cms-addpkg PhysicsTools/NanoAOD
-sed -i "s/nanoSequenceOnlyFullSim = .*/nanoSequenceOnlyFullSim = cms.Sequence(cms.Task(protonTablesTask,triggerObjectTablesTask))\n/g" $CMSSW_BASE/src/PhysicsTools/NanoAOD/python/nano_cff.py
-scram b -j
+#git cms-addpkg PhysicsTools/NanoAOD
+#scram b -j
 
 #PPS Direct simulation (not in release yet)
-git cms-merge-topic forthommel:pps-direct_simu_stdseq-12_3_X
+#git cms-merge-topic forthommel:pps-direct_simu_stdseq-12_3_X
+#sed -i "s/nanoSequenceOnlyFullSim = .*/nanoSequenceOnlyFullSim = cms.Sequence(cms.Task(protonTablesTask,triggerObjectTablesTask))\n/g" $CMSSW_BASE/src/PhysicsTools/NanoAOD/python/nano_cff.py
+git cms-merge-topic michael-pitt:ppsSim_fix
 scram b -j
 
 #GenProton info (not in release yet)
-git cms-merge-topic forthommel:pps-nanoaod_gen_proton_table-12_2_X
-scram b -j
+#git cms-merge-topic forthommel:pps-nanoaod_gen_proton_table-12_2_X
+#scram b -j
 
 
 #This package
