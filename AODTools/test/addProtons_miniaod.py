@@ -87,7 +87,8 @@ process.ctppsProtons.fitVtxY = True
 #if false then ndof=1 and chi2 values will be big (filteredProton container will be empty)
                           
 #If interested in the reconstruction of signal protons only (no PU), uncomment this line:
-if not options.doSignalOnly:
+if options.doSignalOnly:
+  print('INFO: reconstruct only signal protons (from hard process)')
   process.beamDivergenceVtxGenerator.srcGenParticle = cms.VInputTag(cms.InputTag("prunedGenParticles"))
 
 # Output definition

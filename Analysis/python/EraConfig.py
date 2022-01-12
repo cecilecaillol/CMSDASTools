@@ -18,7 +18,7 @@ ANALYSISGRL = {
 }
 
 cmssw=os.environ['CMSSW_BASE']
-ANALYSISCUT={'': {'mu' : '-c %s'%ANALYSISCHANNELCUT['mu'], 'el' : '-c %s'%ANALYSISCHANNELCUT['el']}}
+ANALYSISCUT={'': {'mu' : '-c "%s"'%ANALYSISCHANNELCUT['mu'], 'el' : '-c "%s"'%ANALYSISCHANNELCUT['el']}}
 for y in ANALYSISTRIGGER:
   ANALYSISCUT[y]={}
   for c in ANALYSISTRIGGER[y]:
